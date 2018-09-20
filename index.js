@@ -4,7 +4,7 @@
 //import React from 'react';
 //import ReactDOM from 'react-dom';
 //
-import './index.css';
+//import './index.css';
 
 
 class PomClock extends React.Component {
