@@ -12,10 +12,10 @@ class PomClock extends React.Component {
     render(){
 
         return(
-            <div className = "main text-center">
+            <div className="main text-center">
 
                 <h1>POMIDORO CLOCK</h1>
-                <Player audio = "http://www.orangefreesounds.com/wp-content/uploads/2017/10/Twin-bell-alarm-clock-ringing-short.mp3?_=1"/>
+
                 <Timer/>
 
             </div>
@@ -24,55 +24,7 @@ class PomClock extends React.Component {
 
 }
 
-class Player extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {soundSwitch: true};
-        this.playStopSound = this.playStopSound.bind(this);
 
-    }
-
-    componentDidMount(){
-        console.log(this.state.soundSwitch);
-
-    }
-
-
-    playStopSound(){
-
-        var media = document.querySelector('audio');
-        this.setState({soundSwitch:!this.state.soundSwitch});
-
-        console.log(this.state.soundSwitch);
-        if(this.state.soundSwitch && media.paused){
-            media.play();
-        }else{
-            media.pause();
-        }
-       // if(this.state.soundSwitch){
-       //     this.props.audio.play();
-       // }else{
-       //     this.props.audio.pause();
-       // }
-
-    }
-
-
-
-    render(){
-     return(
-         <div>
-             <audio loop = "true">
-                    <source src = "http://www.orangefreesounds.com/wp-content/uploads/2017/10/Twin-bell-alarm-clock-ringing-short.mp3?_=1"/>
-
-                </audio>
-             <button type = "button" className = "btn btn-info reset-button" onClick = {this.playStopSound}>Play/Stop sound</button>
-
-         </div>
-
-     );
-    }
-}
 
 class TimeInput extends React.Component{
     constructor(props){
@@ -83,7 +35,7 @@ class TimeInput extends React.Component{
     }
 
     onChangeHandlerTime(e){
-        this.props.onTimeLengthChange(e.target.value *60);
+        this.props.onTimeLengthChange(e.target.value * 60);
     }
     onChangeHandlerBreak(e){
         this.props.onBreakLengthChange(e.target.value * 60);
@@ -102,12 +54,12 @@ class TimeInput extends React.Component{
         let breakValue = this.props.break/60;
         return(
 
-            <form className = "form-inline form-container">
+            <form className="form-inline form-container">
 
-                  <div className = "inputs">
-                        <label id = "session-label" htmlFor = "session-length">TIME</label>
+                  <div className="inputs">
+                        <label id="session-label" htmlFor="session-length">TIME</label>
 
-                        <input id="session-length" type = "number" min = "0"  onChange = {this.onChangeHandlerTime} value = {timeValue} className = "form-control time-input" ref="time"/>
+                        <input id="session-length" type="number" min="1" max="60" onChange={this.onChangeHandlerTime} value={timeValue} className="form-control time-input" ref="time"/>
                        <br/>
 
                       <input type="button" id="session-increment" className = "form-control" onClick ={this.deIncrementHandler.bind(this, 'timeLength')} value = "+"/>
@@ -118,15 +70,15 @@ class TimeInput extends React.Component{
 
                     </div>
 
-                    <div className = "inputs">
-                        <label id="break-label" htmlFor= "break-length">BREAK</label>
+                    <div className="inputs">
+                        <label id="break-label" htmlFor="break-length">BREAK</label>
 
-                        <input id="break-length" type = "number" min ="0" onChange = {this.onChangeHandlerBreak} value = {breakValue} className = "form-control time-input" />
+                        <input id="break-length" type="number" min="1" max="60" onChange = {this.onChangeHandlerBreak} value = {breakValue} className="form-control time-input" />
 
                         <br/>
 
-                        <input type="button" id="break-increment" onClick ={this.deIncrementHandler.bind(this, 'breakLength')} value = "+"/>
-                <input type="button" id="break-decrement" onClick ={this.deIncrementHandler.bind(this, 'breakLength')} value = "-"/>
+                        <input type="button" id="break-increment" className="form-control" onClick ={this.deIncrementHandler.bind(this, 'breakLength')} value = "+"/>
+                <input type="button" id="break-decrement" className="form-control" onClick={this.deIncrementHandler.bind(this, 'breakLength')} value="-"/>
 
 
                       </div>
@@ -196,6 +148,10 @@ class Timer extends React.Component {
 
         if(this.state.switch){
             clearInterval(this.timerID);
+            if(this.alarm){
+            this.alarm.pause();
+            this.alarm.currentTime = 0;
+            };
             this.setState({switch: !this.state.switch});
 
         }else{
@@ -275,7 +231,7 @@ class Timer extends React.Component {
 
 
                 <div id="start_stop" className = {"timerClass container-fluid " + (this.state.switch ? "red" : "green")}  onClick = {this.startPauseTimer}>
-                    <p id="timer-label" className = "timerName">{this.state.name.toUpperCase()}</p>
+                    <div id="timer-label" className = "timerName">{this.state.name.toUpperCase()}</div>
                 <p id="time-left" className = "clock">{m  + ":" + s }</p>
                 </div>
 
@@ -292,6 +248,7 @@ class Timer extends React.Component {
         );
     }
 }
+
 
 ReactDOM.render(<PomClock />, document.getElementById('root'));
 
