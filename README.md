@@ -1,3 +1,2 @@
-# timer
-fcc
-pomidoro clock FCC
+# Countdown Timer
+pomidoro clock FCC React.js
